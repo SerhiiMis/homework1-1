@@ -16,18 +16,24 @@ users = [
 def get_birthdays_per_week(users):
     birthdays_per_week = defaultdict(list)
     today = datetime.today().date()
+    # Прохід по співробітникам
     for user in users:
         name = user["name"]
         birthday = user["birthday"].date()
         birthday_this_year = birthday.replace(year=today.year)
+        # Порівняння дати народження з поточним роком
         if birthday_this_year < today:
             birthday_this_year = birthday_this_year.replace(year=today.year + 1)
+        # Порівняння з поточною датою
         delta_days = (birthday_this_year - today).days
+        #Визначення дня тижня
         if 0 <= delta_days < 7:
             birthday_day_of_week = (today + timedelta(days=delta_days)).strftime("%A")
+            #Перевірка, чи день народження вихідний
             if birthday_day_of_week in ["Saturday", "Sunday"]:
                 birthday_day_of_week = "Monday"
             birthdays_per_week[birthday_day_of_week].append(name)
+    #Виведення результату
     for day, names in birthdays_per_week.items():
         print(f"{day}: {', '.join(names)}")
 
